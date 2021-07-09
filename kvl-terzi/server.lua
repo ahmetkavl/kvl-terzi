@@ -130,7 +130,7 @@ AddEventHandler('kvl-terzi:AddExp', function(player, XPS) -- xps = Arttırmak is
     local result = MySQL.Sync.fetchAll('SELECT xp FROM users WHERE identifier = @identifier', {['@identifier'] = xPlayer.identifier})
 
     if XPS > 10000 then
-            DropPlayer(source,'kvl-terzi you shouldnt tried to add xp')
+            DropPlayer(player,'kvl-terzi you shouldnt tried to add xp')
     else
             
         if result[1].xp >= 10 then
