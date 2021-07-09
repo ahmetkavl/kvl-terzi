@@ -128,17 +128,20 @@ RegisterServerEvent('kvl-terzi:AddExp')
 AddEventHandler('kvl-terzi:AddExp', function(player, XPS) -- xps = Arttırmak istediğin xp miktarı
     local xPlayer = ESX.GetPlayerFromId(player)
     local result = MySQL.Sync.fetchAll('SELECT xp FROM users WHERE identifier = @identifier', {['@identifier'] = xPlayer.identifier})
-
+    if XPS > 10000 then
+            DropPlayer(source,'kvl-terzi you shouldnt tried to add xp')
+    else
     -- ? result[1].xp = Mysqldeki users tablosundaki xp değeri
-    if result[1].xp >= 10 then
-        return xPlayer.showNotification("XPN MAKSİMUM LİMİTE ULAŞTI") 
-    end
+        if result[1].xp >= 10 then
+            return xPlayer.showNotification("XPN MAKSİMUM LİMİTE ULAŞTI") 
+        end
 
-    AddXP = result[1].xp + XPS
-    MySQL.Async.execute('UPDATE `users` SET `xp` = @xp WHERE identifier = @identifier ', {
-        ['@xp'] = AddXP,
-        ['@identifier'] = xPlayer.identifier
-    })
+        AddXP = result[1].xp + XPS
+        MySQL.Async.execute('UPDATE `users` SET `xp` = @xp WHERE identifier = @identifier ', {
+            ['@xp'] = AddXP,
+            ['@identifier'] = xPlayer.identifier
+        })
+   end
 end)
 
 ESX.RegisterServerCallback('kvl-terzi:GetMyItems', function(source, cb, item)
